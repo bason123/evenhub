@@ -8,11 +8,11 @@ import {
 } from 'react-native';
 import React, {ReactNode, useState} from 'react';
 import {EyeSlash} from 'iconsax-react-native';
-import {appColors} from '../../constants/appColors';
+import {appColors} from '../constants/appColors';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import {appInfo} from '../../constants/appInfos';
-import {globalStyles} from '../../styles/globalStyles';
+import {appInfo} from '../constants/appInfos';
+import {globalStyles} from '../styles/globalStyles';
 
 interface Props {
   value: string;

@@ -6,7 +6,7 @@ import { appColors } from '../../constants/appColors';
 import { appInfo } from '../../constants/appInfos';
 import { fontFamilies } from '../../constants/fontFamilies';
 import { globalStyles } from '../../styles/globalStyles';
-import { TextComponent } from '../components';
+import { TextComponent } from '../../components';
 
 const OnbroadingScreen = ({navigation}: any) => {
   const [index, setIndex] = useState(0);

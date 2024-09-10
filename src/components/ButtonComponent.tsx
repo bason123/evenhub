@@ -8,8 +8,9 @@ import {
 } from 'react-native';
 import React, {ReactNode} from 'react';
 import {TextComponent} from '.';
-import {globalStyles} from '../../styles/globalStyles';
-import {appColors} from '../../constants/appColors';
+import {globalStyles} from '../styles/globalStyles';
+import {appColors} from '../constants/appColors';
+import {fontFamilies} from '../constants/fontFamilies';
 
 interface Props {
   icon?: ReactNode;
@@ -48,9 +49,10 @@ const ButtonComponent = (props: Props) => {
       {icon && icon}
       <TextComponent
         text={text}
-        color={textColor}
-        styles={[textStyles, {marginLeft: icon ? 12 : 0}]}
+        color={textColor ?? appColors.white}
+        styles={[textStyles, {marginLeft: icon ? 12 : 0, fontSize: 16}]}
         flex={icon && iconFlex === 'right' ? 1 : 0}
+        font={fontFamilies.medium}
       />
       {icon && iconFlex === 'right' && icon}
     </TouchableOpacity>

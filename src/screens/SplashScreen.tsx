@@ -3,7 +3,7 @@ import { ActivityIndicator, Image, ImageBackground } from 'react-native';
 
 import { appColors } from '../constants/appColors';
 import { appInfo } from '../constants/appInfos';
-import { SpaceComponent } from './components';
+import { SpaceComponent } from '../components';
 
 const SplashScreen = () => {
   return (
