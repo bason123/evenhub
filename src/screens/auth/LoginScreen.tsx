@@ -1,4 +1,4 @@
-import {View, Text, Button, Image, Switch} from 'react-native';
+import {View, Text, Button, Image, Switch, Alert} from 'react-native';
 import React, {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {globalStyles} from '../../styles/globalStyles';
@@ -16,20 +16,39 @@ import {appColors} from '../../constants/appColors';
 import SocialLogin from './Components/SocialLogin';
 import ForgotPassword from './ForgotPassword';
 import authenticationAPI from '../../apis/authApi';
+import {Validate} from '../../utils/validate';
+import {useDispatch} from 'react-redux';
+import {addAuth} from '../../redux/reducers/authReducer';
 
 const LoginScreen = ({navigation}: any) => {
   const [email, setEmail] = useState('');
-  const [passWord, setPassWord] = useState('');
+  const [password, setPassWord] = useState('');
   const [isRemember, setIsRemember] = useState(true);
+  const dispatch = useDispatch();
 
   const handleLogin = async () => {
-    try {
-      const res = await authenticationAPI.HanleAuthentication('/hello');
-      console.log(res);
-    } catch (error) {
-      console.log(error);
+    const emailValidation = Validate.email(email);
+
+    if (emailValidation) {
+      try {
+        const res = await authenticationAPI.HanleAuthentication(
+          '/login',
+          {email, password},
+          'post',
+        );
+        dispatch(addAuth(res.data));
+
+        await AsyncStorage.setItem(
+          'auth',
+          isRemember ? JSON.stringify(res.data) : email,
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      Alert.alert('Email is not correct!!!');
     }
-  }
+  };
 
   return (
     <ContainerComponent isImageBackground isScroll>
@@ -55,7 +74,7 @@ const LoginScreen = ({navigation}: any) => {
           affix={<Sms size={22} color={appColors.gray} />}
         />
         <InputComponent
-          value={passWord}
+          value={password}
           onChange={val => setPassWord(val)}
           placeholder="Nhap PassWord"
           isPassword
@@ -70,11 +89,14 @@ const LoginScreen = ({navigation}: any) => {
               thumbColor={appColors.white}
               onChange={() => setIsRemember(!isRemember)}
             />
+            <SpaceComponent width={4} />
             <TextComponent text="Remember me" />
           </RowComponent>
           <ButtonComponent
             text="Forgot Password?"
-            onPress={() => {navigation.navigate('ForgotPassword')}}
+            onPress={() => {
+              navigation.navigate('ForgotPassword');
+            }}
             type="text"
           />
         </RowComponent>
@@ -83,11 +105,15 @@ const LoginScreen = ({navigation}: any) => {
       <SectionComponent>
         <ButtonComponent onPress={handleLogin} text="SIGN IN" type="primary" />
       </SectionComponent>
-      <SocialLogin/>
+      <SocialLogin />
       <SectionComponent>
         <RowComponent justify="center">
           <TextComponent text="Don’t have an account? " />
-          <ButtonComponent type="link" text="Sign up" onPress={()=>navigation.navigate('SignUpScreen')}/>
+          <ButtonComponent
+            type="link"
+            text="Sign up"
+            onPress={() => navigation.navigate('SignUpScreen')}
+          />
         </RowComponent>
       </SectionComponent>
     </ContainerComponent>
